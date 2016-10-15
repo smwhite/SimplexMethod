@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-
+filename = "TestGame.txt"
 #############################################
 def findpivot():
     global pivot
@@ -103,7 +103,7 @@ x = []
 y = []
 pivot = 0
 
-data = np.loadtxt(os.path.abspath("TestGame.txt"))
+data = np.loadtxt(os.path.abspath(filename))
 
 dataNumRows = data.shape[0]
 dataNumColumns = data.shape[1]
