@@ -15,9 +15,11 @@ def findpivot():
                 for i in data[:,px]:
                     if i != 0:
                         pl.append(row[py]/i)
+                        py +=1
                     elif i == 0:
                         pl.append(1000)
-                py +=1
+                        py +=1
+                
                         
                     
                 fp =False
@@ -65,19 +67,19 @@ def PivotCalculation():
     xl=0
     for x in row:
         if xl  == pivotPosition[1]:
-            newRow[xl] = row[xl]/pivot
+            newRow[xl] = round(row[xl]/pivot,2)
         else:
             d = row[pivotPosition[1]] * data[xl,pivotPosition[1]]
-            newRow[xl] = row[xl] - (d/pivot)
+            newRow[xl] = round(row[xl] - (d/pivot),2)
 
         xl+=1
         
     for y in column:
         if yl == pivotPosition[0]:
-            newColumn[yl] = - column[yl]/pivot
+            newColumn[yl] = round(- column[yl]/pivot,2)
         else:
             d = column[pivotPosition[0]] * data[pivotPosition[0],yl]
-            newColumn[yl] = column[yl] - (d/pivot)
+            newColumn[yl] = round(column[yl] - (d/pivot),2)
             
 
         yl+=1
@@ -123,12 +125,24 @@ while (i<dataNumColumns):
 
 lowestValue = data.min()
 data = data + abs(lowestValue)
+solve = True
 
-pivotPosition = findpivot()
+while(solve):
+    
+    pivotPosition = findpivot()
+    
+    if pivot < 0:
+        print "Something went wrong while selecting pivot"
+        break
+    else:
+        print "pivot is ",pivot
 
-data = PivotCalculation().copy()
+    data = PivotCalculation().copy()
 
+    if min(column) > 0:
+        solve = False
+
+print data
 print row
 print column
-print data
 print brc
