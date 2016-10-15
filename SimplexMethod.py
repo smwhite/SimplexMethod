@@ -67,19 +67,19 @@ def PivotCalculation():
     xl=0
     for x in row:
         if xl  == pivotPosition[1]:
-            newRow[xl] = round(row[xl]/pivot,2)
+            newRow[xl] = row[xl]/pivot
         else:
             d = row[pivotPosition[1]] * data[xl,pivotPosition[1]]
-            newRow[xl] = round(row[xl] - (d/pivot),2)
+            newRow[xl] = row[xl] - (d/pivot)
 
         xl+=1
         
     for y in column:
         if yl == pivotPosition[0]:
-            newColumn[yl] = round(- column[yl]/pivot,2)
+            newColumn[yl] = - column[yl]/pivot
         else:
             d = column[pivotPosition[0]] * data[pivotPosition[0],yl]
-            newColumn[yl] = round(column[yl] - (d/pivot),2)
+            newColumn[yl] = column[yl] - (d/pivot)
             
 
         yl+=1
@@ -112,14 +112,14 @@ dataNumColumns = data.shape[1]
 # initialize the "extra" rows and columns to the game size
 i = 0
 while (i<dataNumRows):
-    x.append('x'+str(i+1))
+    x.append('x')
     row.append(1)
     i += 1
 
 
 i = 0
 while (i<dataNumColumns):
-    y.append('y'+str(i+1))
+    y.append('y')
     column.append(-1)
     i += 1
 
@@ -139,6 +139,9 @@ while(solve):
 
     data = PivotCalculation().copy()
 
+    x[pivotPosition[0]],y[pivotPosition[1]] = y[pivotPosition[1]],x[pivotPosition[0]]
+
+
     if min(column) > 0:
         solve = False
 
@@ -146,3 +149,39 @@ print data
 print row
 print column
 print brc
+print x
+print y
+print
+print
+print
+
+
+# end results
+vb = np.reciprocal(brc)
+v = round(vb + lowestValue,2)
+print "the value of the game is", v
+
+P=[]
+Q=[]
+i=0
+
+for x in x:
+    if x == 'x':
+        P.append(0)
+    else:
+        P.append(round(column[i]*vb,2))
+    i+=1
+
+print "the probability that player 1's choices will pay off are", P
+
+
+i=0
+
+for y in y:
+    if y == 'y':
+        Q.append(0)
+    else:
+        Q.append(round(row[i]*vb,2))
+    i+=1
+
+print "the probability that player 2's choices will pay off are", Q
