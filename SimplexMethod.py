@@ -2,6 +2,7 @@ import os
 import numpy as np
 
 
+#############################################
 def findpivot():
     global pivot
     fp = True
@@ -29,10 +30,38 @@ def findpivot():
         if i == pivot:
             break
         py+=1
+    pivot = data[px,py]
     return [px,py]
-    
-        
+#############################################
 
+def PivotCalculation():
+    pivotData = data.copy()
+    yl=0
+    xl=0
+    for y in pivotData:
+        for x in y:
+            #if pivot
+            if xl == pivotPosition[0] and yl == pivotPosition[1]:
+                pivotData[xl,yl] = 1/x
+
+            #else if in pivot column
+            elif yl == pivotPosition[1]:
+                pivotData[xl,yl] = -data[xl,yl]/pivot
+            #else if in pivot row
+            elif xl == pivotPosition[0]:
+                pivotData[xl,yl] = data[xl,yl]/pivot
+            #else if in neither
+            elif xl != pivotPosition[0] and yl != pivotPosition[1]:
+                d= data[pivotPosition[0],yl]*data[xl,pivotPosition[1]]
+                pivotData[xl,yl] = data[xl,yl]- (d/pivot)
+            xl +=1
+        yl+=1
+        xl =0
+    print data
+    return pivotData
+
+
+#############################################
 
 # start of Simplex solver
 
@@ -67,12 +96,8 @@ while (i<dataNumColumns):
 lowestValue = data.min()
 data = data + abs(lowestValue)
 
-column[0] =2
-
 pivotPosition = findpivot()
 
+data = PivotCalculation().copy()
 
-
-print pivot
-print pivotPosition
-
+print data
