@@ -57,7 +57,35 @@ def PivotCalculation():
             xl +=1
         yl+=1
         xl =0
-    print data
+    # calculation for borders 
+    global row,column, brc
+    newRow = row[:]
+    newColumn = column[:]
+    yl=0
+    xl=0
+    for x in row:
+        if xl  == pivotPosition[1]:
+            newRow[xl] = row[xl]/pivot
+        else:
+            d = row[pivotPosition[1]] * data[xl,pivotPosition[1]]
+            newRow[xl] = row[xl] - (d/pivot)
+
+        xl+=1
+        
+    for y in column:
+        if yl == pivotPosition[0]:
+            newColumn[yl] = - column[yl]/pivot
+        else:
+            d = column[pivotPosition[0]] * data[pivotPosition[0],yl]
+            newColumn[yl] = column[yl] - (d/pivot)
+            
+
+        yl+=1
+
+    brc -= row[pivotPosition[0]]*column[pivotPosition[1]] /pivot
+    
+    row = newRow[:]
+    column = newColumn[:]
     return pivotData
 
 
@@ -69,9 +97,9 @@ def PivotCalculation():
 row = []
 column = []
 brc = 0
-x =[]
-y =[]
-pivot =5
+x = []
+y = []
+pivot = 0
 
 data = np.loadtxt(os.path.abspath("TestGame.txt"))
 
@@ -100,4 +128,7 @@ pivotPosition = findpivot()
 
 data = PivotCalculation().copy()
 
+print row
+print column
 print data
+print brc
