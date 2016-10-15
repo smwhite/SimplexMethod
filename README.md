@@ -1,6 +1,8 @@
 # SimplexMethod
 A program that solves a 2 person zero-sum game using the simplex algorithm
 
+Program is written in python and requries the numpy library
+
 Only tested on 2x2 and 3x3 but should work with any size
 
 The game file and program should be at the same location on the computer
